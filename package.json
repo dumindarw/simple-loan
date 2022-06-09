@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "graphql": "^14.7.0",
+    "graphql-upload": "^13.0.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-graphql": "^0.12.0",
+    "koa-mount": "^4.0.0",
+    "lodash": "^4.17.21",
+    "neo4j-driver": "^4.4.5"
+  },
+  "name": "simpleloan",
+  "description": "Create a simple http server, listen to the port 8050 using express server Simple html form to accept client details,  Name Amount Image ( index.htm is already supplied to make it simple ) Store these data in a database / file storage List the existing clients in the database / file storage",
+  "version": "1.0.0",
+  "main": "start.js",
+  "scripts": {
+    "test": "mocha --timeout 10000 test/*.test.js",
+    "start": "node start.js",
+    "dev": "nodemon start.js"
+  },
+  "author": "Duminda Wanninayake",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}
