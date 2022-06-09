@@ -6,7 +6,10 @@ import { CreateClient } from "../db/neo4j";
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat } from "graphql";
 
 
+
+//https://stackoverflow.com/questions/63460397/how-to-set-up-graphql-upload-with-koa-graphql
 const ClientSchema = new GraphQLSchema({
+
   mutation: new GraphQLObjectType({
       name: 'Mutation',
       fields: {
@@ -18,11 +21,12 @@ const ClientSchema = new GraphQLSchema({
                   },
                   amount: {
                       type: GraphQLFloat
-                  }
-                  /*image: {
+                  },
+                  image: {
                     type: ImageUploadType
-                  }*/
+                  }
               },
+            
               resolve: async (root, args, context, info) => {
                 data = await CreateClient(args);
                 console.log(data);
