@@ -1,6 +1,11 @@
 import React from "react";
 import { useMutation, gql } from "@apollo/client";
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+
 const ADD_CLIENT = gql`
   mutation($name: String, $amount: Float, $file: Upload) {
     ADD_CLIENT(name: $name, amount: $amount, file: $file) {
@@ -27,7 +32,7 @@ const CreateClient = () => {
         validity,
         files: [file]
       }
-    }) => validity.valid && isClientAdded(false) && setFileData( file );
+    }) => validity.valid &&  setFileData( file );
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -46,6 +51,8 @@ const CreateClient = () => {
             name: event.currentTarget.name,
             value: event.currentTarget.value,
         });
+
+        isClientAdded(false) ;
     };
   
     if (loading) return <div>Loading...</div>;
@@ -53,16 +60,66 @@ const CreateClient = () => {
     
   
     return (
-      <React.Fragment>
-          <form onSubmit={handleSubmit}>
-            <label>Name:</label> <input type = "text" name = "firstName" id="firstName" onChange={handleChange}/><br/> 
-            <label>Amount:</label> <input type = "number" name = "amount" id="amount"  min="0.00"  step="0.01" max="10000.00" presicion={2} onChange={handleChange}/><br/>
-            <input type="file" required onChange={onChange} /><br/>
-            <button type = "submit" >Add Client</button><br/>
-            {clientAdded ? <div>Client Successfully Added !</div> : <div></div>}
+      <div>
+      <header>&nbsp;</header>
+          <Container component="main" maxWidth="xs">
+              <Box
+                  sx={{
+                      marginTop: 8,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                  }}
+              >
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+                    <TextField
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="firstName"
+                          label="Firstname"
+                          name="firstName"
+                          autoComplete="firstName"
+                          autoFocus
+                          onChange={handleChange}
+                      />
+
+                    <TextField
+                          margin="normal"
+                          required
+                          fullWidth
+                          type = "number"
+                          id="amount"
+                          label="Amount"
+                          name="amount"
+                          autoComplete="amount"
+                          min="0.00"  
+                          step="0.01" 
+                          max="10000.00" 
+                          presicion={2}
+                          onChange={handleChange}
+                      />
+
+                    <TextField
+                          margin="normal"
+                          type="file"
+                          required
+                          fullWidth
+                          onChange={onChange}
+                      />
+                
             
-        </form>
-      </React.Fragment>
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        Add Client
+                    </Button>
+                    {clientAdded ? <div>Client Successfully Added !</div> : <div></div>}
+              
+                </Box>
+
+            </Box>
+            </Container>
+            </div>
     );
   };
 

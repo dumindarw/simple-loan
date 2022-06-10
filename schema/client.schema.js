@@ -3,7 +3,7 @@ import { Response } from "../types/response.type";
 
 import { CreateClient, GetClients } from "../db/neo4j";
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLList } from "graphql";
 import { ClientType } from "../types/client.type";
 import { storeFS } from "../utils/file.util";
 import { GraphQLUpload } from "graphql-upload";
@@ -45,20 +45,14 @@ const ClientSchema = new GraphQLSchema({
     name: 'Query',
     fields: {
       LIST_CLIENTS: { 
-        type: ClientType,
-        args:{
-          
+        type: new GraphQLList(ClientType),
+        resolve: async (parent, args) => {
+          return GetClients().then(data => {
+            return data;
+          })
         }
       }
-    },
-
-    resolve: async (parent, args) => {
-      console.log("in resolve...");
-      return GetClients().then(data => {
-        console.log(data);
-        return data;
-      })
-    }
+}
   }) 
 })
 

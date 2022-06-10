@@ -33,10 +33,6 @@ export const CreateClient = async (client) => {
     const singleRecord = result.records[0]
     const node = singleRecord.get(0) 
 
-    console.log(node.properties.name)
-
-    //return new Client(node)
-
     return {name: node.properties.name, amount: node.properties.amount};
 }
 
@@ -46,8 +42,8 @@ export const GetClients = async () => {
     'MATCH (c:Client) RETURN c'
   )
 
-  console.log(result);
-
-  return result.records;
+  return result.records.map(record => {
+    return record.get(0).properties;
+  })
   
 }
