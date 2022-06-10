@@ -1,12 +1,21 @@
-const { GraphQLInputObjectType, GraphQLID, GraphQLString, GraphQLFloat } = require("graphql");
+const { GraphQLInputObjectType, GraphQLObjectType, GraphQLID, GraphQLString, GraphQLFloat } = require("graphql");
 
 
-export const clientInputType = new GraphQLInputObjectType({
+export const ClientInputType = new GraphQLInputObjectType({
     name: "client",
     fields: {
-        id: {
-            type: GraphQLID
+        name:{
+            type: GraphQLString
         },
+        amount: {
+            type: GraphQLFloat
+        }
+    }
+})
+
+export const ClientType = new GraphQLObjectType({
+    name: "client",
+    fields: {
         name:{
             type: GraphQLString
         },

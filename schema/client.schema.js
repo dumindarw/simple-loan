@@ -1,20 +1,19 @@
 import { ImageUploadType } from "../types/image-upload.type";
 import { Response } from "../types/response.type";
 
-import { CreateClient } from "../db/neo4j";
+import { CreateClient, GetClients } from "../db/neo4j";
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat } from "graphql";
+import { ClientType } from "../types/client.type";
+import { storeFS } from "../utils/file.util";
+import { GraphQLUpload } from "graphql-upload";
 
-
-
-//https://stackoverflow.com/questions/63460397/how-to-set-up-graphql-upload-with-koa-graphql
 const ClientSchema = new GraphQLSchema({
-
   mutation: new GraphQLObjectType({
       name: 'Mutation',
       fields: {
           ADD_CLIENT: {
-              type: Response,
+              type: ClientType,
               args:{
                   name: {
                       type: GraphQLString,
@@ -22,15 +21,22 @@ const ClientSchema = new GraphQLSchema({
                   amount: {
                       type: GraphQLFloat
                   },
-                  image: {
-                    type: ImageUploadType
+                  file: {
+                    type: ImageUploadType,
+                    resolve: GraphQLUpload
                   }
               },
-            
               resolve: async (root, args, context, info) => {
-                data = await CreateClient(args);
-                console.log(data);
-                return data;
+                const { file } = await args.file;
+                const filename = file.filename;
+                const stream = file.createReadStream();
+                const pathObj = await storeFS({ stream, filename });
+                const fileLocation = pathObj.path;
+                return CreateClient(args).then(data => {
+                  if(data){
+                    return data;
+                  }
+                });
               }
           }
       }
@@ -38,7 +44,20 @@ const ClientSchema = new GraphQLSchema({
   query : new GraphQLObjectType({
     name: 'Query',
     fields: {
-      _dummy: { type: GraphQLString }
+      LIST_CLIENTS: { 
+        type: ClientType,
+        args:{
+          
+        }
+      }
+    },
+
+    resolve: async (parent, args) => {
+      console.log("in resolve...");
+      return GetClients().then(data => {
+        console.log(data);
+        return data;
+      })
     }
   }) 
 })

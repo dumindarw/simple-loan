@@ -23,20 +23,31 @@ console.log(`Database running at ${neo4jUri}`)
 
 
 export const CreateClient = async (client) => {
-    console.log(client);
+
     const result = await session.run(
         'CREATE (c:Client {name: $name, amount: $amount }) RETURN c',
         { name: client.name, amount: client.amount }
     )
 
-    console.log(result);
 
     const singleRecord = result.records[0]
-    console.log(singleRecord);
     const node = singleRecord.get(0) 
-    console.log(node);
-    
+
     console.log(node.properties.name)
 
-    return new Client(node);
+    //return new Client(node)
+
+    return {name: node.properties.name, amount: node.properties.amount};
+}
+
+export const GetClients = async () => {
+
+  const result = await session.run(
+    'MATCH (c:Client) RETURN c'
+  )
+
+  console.log(result);
+
+  return result.records;
+  
 }

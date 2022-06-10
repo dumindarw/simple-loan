@@ -1,12 +1,5 @@
-const { GraphQLInputObjectType, GraphQLScalarType } = require("graphql");
-const {  GraphQLUpload } = require("graphql-upload");
-
+const { GraphQLScalarType } = require("graphql");
 
 export const ImageUploadType = new GraphQLScalarType({
-    name: "image",
-    fields:{
-        file: {
-            type: !GraphQLUpload,
-        }
-    },
+    name: "Upload"
 })
