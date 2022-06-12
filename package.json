@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@koa/cors": "^3.3.0",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.1",
     "graphql": "^14.7.0",
     "graphql-upload": "^13.0.0",

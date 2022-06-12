@@ -15,6 +15,7 @@ const LIST_CLIENTS = gql`
     LIST_CLIENTS {
       name
       amount
+      image
     }
   }
 `;
@@ -25,11 +26,13 @@ const ListClients = () => {
   const [clients, setClients] = React.useState([]);
 
   useEffect(()=>{
-    refetch();
+
     if(data){
-      setClients(data.LIST_CLIENTS)
+      refetch();
+      setClients(data.LIST_CLIENTS);
+
     }
-  }, [data, refetch])
+  }, [data])
 
 
   if (loading) return <div>Loading...</div>;
@@ -52,16 +55,19 @@ const ListClients = () => {
                   <TableRow>
                       <TableCell>Client Name</TableCell>
                       <TableCell align="right">Amount</TableCell>
+                      <TableCell align="right">Image</TableCell>
                   </TableRow>
               </TableHead>
               <TableBody>
                   {clients && clients.map((client) => (
-                      <TableRow key={1}              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableRow key={client.id}              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                           <TableCell align="left">{client.name}</TableCell>
                           <TableCell align="right">
                               {client.amount}
                           </TableCell>
-                          
+                          <TableCell align="right">
+                              {client.image}
+                          </TableCell>
                       </TableRow>
                   ))}
               </TableBody>

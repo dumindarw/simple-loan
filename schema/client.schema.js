@@ -1,9 +1,10 @@
+import crypto  from 'crypto';
+
 import { ImageUploadType } from "../types/image-upload.type";
-import { Response } from "../types/response.type";
 
 import { CreateClient, GetClients } from "../db/neo4j";
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLList } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLList, GraphQLID } from "graphql";
 import { ClientType } from "../types/client.type";
 import { storeFS } from "../utils/file.util";
 import { GraphQLUpload } from "graphql-upload";
@@ -14,7 +15,7 @@ const ClientSchema = new GraphQLSchema({
       fields: {
           ADD_CLIENT: {
               type: ClientType,
-              args:{
+              args:{               
                   name: {
                       type: GraphQLString,
                   },
@@ -32,7 +33,14 @@ const ClientSchema = new GraphQLSchema({
                 const stream = file.createReadStream();
                 const pathObj = await storeFS({ stream, filename });
                 const fileLocation = pathObj.path;
-                return CreateClient(args).then(data => {
+
+
+                const client = {};
+                client.name = args.name;
+                client.amount = args.amount;
+                client.image = fileLocation;
+
+                return CreateClient(client).then(data => {
                   if(data){
                     return data;
                   }

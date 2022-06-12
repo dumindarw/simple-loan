@@ -1,0 +1,42 @@
+version: '3.6'
+
+services:
+
+  client-api:
+    image: client-api:latest
+    container_name: client-api
+    build: .
+    restart: on-failure
+    ports:
+      - "8050:8050"   
+    networks:
+      - client-network
+
+  client-fe:
+    image: client-fe:latest
+    container_name: client-fe
+    build: ./frontend
+    restart: on-failure
+    ports:
+      - "80:80" 
+    depends_on:
+      - client-api    
+    networks:
+      - client-network
+      
+  neo4j:
+    image: neo4j
+    container_name: neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/neo456
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./neo4j-data:/data neo4j
+      - ./uploads://usr/app/images
+    networks:
+      - client-network
+
+networks:
+    client-network:

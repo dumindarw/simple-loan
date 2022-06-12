@@ -43,3 +43,13 @@ query{
 }
 ```
 
+## Prod
+
+`docker-compose build`
+
+`docker-compose  up -d`
+
+## Application Url
+
+http://localhost
+

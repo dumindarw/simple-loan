@@ -1,0 +1,5 @@
+node_modules
+neo4j_data
+neo4j-data
+.env
+frontend
